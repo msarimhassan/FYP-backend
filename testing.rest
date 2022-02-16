@@ -1,2 +1,58 @@
-POST http://localhost:3000/users/new
+POST http://localhost:5000/company/new
 Content-Type: application/json
+
+{
+    "name":"Test",
+    "email":"testing@test.com",
+    "DtsNo":"ID-234",
+    "url":"https://www.youtube.com/",
+    "instaUsername":"msarimhassan",
+    "whatsappNo":"03244628572",
+    "isOrg":"Yes"
+}
+###
+
+GET http://localhost:5000/users/findbyemail/daimhassan12@gmail.com
+
+###
+POST http://localhost:5000/users/new
+Content-Type: application/json
+
+{
+    "name":"Sarim",
+    "email":"sarimhassan5@gmail.com",
+    "gender":"Male",
+    "isOrg":"No"
+}
+
+###
+
+POST http://localhost:5000/company/addtour/testing@test.com
+Content-Type: application/json
+
+{
+    "name":"sarim",
+    "class":"nine"
+}
+
+###
+GET http://localhost:5000/company/tourcount/testing@test.com
+
+###
+GET http://localhost:5000/company/getcompanydata/testing@test.com
+
+###
+DELETE   http://localhost:5000/company/deletetour
+
+###
+POST  http://localhost:5000/company/addtour
+Content-Type: application/json
+
+
+###
+GET http://localhost:5000/company/gettours/xyz@gmail.com
+
+###
+GET http://localhost:5000/company/gettour/FWNPNMQrtfVpBZUBt7bq
+
+
