@@ -42,7 +42,7 @@ GET http://localhost:5000/company/tourcount/testing@test.com
 GET http://localhost:5000/company/getcompanydata/testing@test.com
 
 ###
-DELETE   http://localhost:5000/company/deletetour
+DELETE   http://localhost:5000/company/deletetour/9z3P1zGIANFhhve64neg
 
 ###
 POST  http://localhost:5000/company/addtour
