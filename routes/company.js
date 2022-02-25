@@ -12,7 +12,7 @@ const {
 	getDocs,
 	getDoc,
 	addDoc,
-	deleteDoc
+	deleteDoc,updateDoc 
 } = require('firebase/firestore');
 
 router.get('/', (req, res) => {
@@ -116,6 +116,7 @@ router.get('/getcompanydata/:email', async (req, res) => {
 //add a tour in a new collection Tours
 
 router.post('/addtour/:email', async (req, res) => {
+	console.log(req.body)
 	const email = req.params.email;
 	console.log(email);
 	const obj = {
@@ -128,6 +129,10 @@ router.post('/addtour/:email', async (req, res) => {
 		date: req.body.date,
 		details: req.body.details
 	};
+
+	// const a = {
+	// 	email: req.params.email, ...req.body
+	// }
 
 	console.log(obj);
 	try {
@@ -181,5 +186,23 @@ router.get('/gettour/:id', async (req, res) => {
 		console.log('No such document!');
 	}
 });
+
+// Update tour of the company 
+
+router.put('/updateTour',async(req,res)=>{
+     const tourRef = doc(db, "tours", req.body.id);
+	 await updateDoc(tourRef, {
+  date:req.body.date,
+  details:req.body.details,
+  duration:req.body.duration,
+  imgUrl:req.body.imgUrl,
+  location:req.body.location,
+  price:req.body.price,
+  title:req.body.title
+
+}).then(Res=>{res.send('Updated')}).catch(err=>{
+	console.log(err);
+})
+})
 
 module.exports = router;
