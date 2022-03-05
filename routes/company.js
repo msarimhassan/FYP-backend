@@ -79,18 +79,20 @@ router.post('/new', async (req, res) => {
 
 //get the tour count how many tours posted by the company
 router.get('/tourcount/:email', async (req, res) => {
+	let count=0;
 	let docID = req.params.email;
-	const usersRef = collection(db, 'users');
+	const usersRef = collection(db, 'tours');
 	try {
 		const q = await query(usersRef, where('email', '==', docID));
 		const queryResult = await getDocs(q);
 		queryResult.forEach(doc => {
-			const { tourlist } = doc.data();
-			let count = tourlist.length;
-			res.json({ count: count });
+			
+		   count++;
 		});
+		res.send({'count':count});
 	} catch (error) {
 		console.log(error);
+		
 		res.send(error);
 	}
 });
