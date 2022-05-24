@@ -7,7 +7,8 @@ const {
 	query,
 	where,
 	collection,
-	getDocs
+	getDocs,
+	deleteDoc
 } = require('firebase/firestore');
 
 router.get('/', (req, res) => {
@@ -32,28 +33,100 @@ router.get('/findbyemail/:email', async (req, res) => {
 // create a user in the firebase
 router.post('/new', async (req, res) => {
 	const obj = {
-		name: req.body.name,
-		email: req.body.email,
-		gender: req.body.gender,
-		isOrg: req.body.isOrg,
+		name: req.body.Name,
+		email: req.body.Email,
+		gender: req.body.Gender,
+		isOrg: 'No',
 		tourlist: []
 	};
 
 	try {
-		// const docRef = await addDoc(collection(db, "users"), {
-		//   first: "Ada",
-		//   last: "Lovelace",
-		//   born: 1815
-		// });
-		// console.log("Document written with ID: ", docRef.id);
-
-		const result = await setDoc(doc(db, 'users', req.body.email), obj).then(
-			() => {
-				res.send({ message: 'Added' });
-			}
-		);
+		setDoc(doc(db, 'users', req.body.Email), obj).then(() => {
+			res.send({ message: 'Added' });
+		});
 	} catch (e) {
 		console.error('Error adding document: ', e);
 	}
 });
+//getting user data
+router.get('/getuserdata/:email', async (req, res) => {
+	let docID = req.params.email;
+	const usersRef = collection(db, 'users');
+	try {
+		const q = await query(usersRef, where('email', '==', docID));
+		const queryResult = await getDocs(q);
+		queryResult.forEach(doc => {
+			const document = doc.data();
+			console.log(document);
+			res.json(document);
+		});
+	} catch (error) {
+		res.send(error);
+	}
+});
+
+//getting all tours of all companies
+router.get('/getalltours', async (req, res) => {
+	let array = [];
+	const querySnapshot = await getDocs(collection(db, 'tours'));
+	querySnapshot.forEach(doc => {
+		// doc.data() is never undefined for query doc snapshots
+		const obj = { id: doc.id, ...doc.data() };
+		array.push(obj);
+	});
+	res.send(array);
+});
+
+//Add to Favourite
+router.post('/addfavourite', async (req, res) => {
+	const obj = {
+		title: req.body.title,
+		location: req.body.location,
+		imgUrl: req.body.imgUrl,
+		duration: req.body.duration,
+		price: req.body.price,
+		date: req.body.date,
+		details: req.body.details,
+		instaUsername: req.body.instaUsername,
+		whatsappNo: req.body.whatsappNo,
+		url: req.body.url,
+		companyName: req.body.companyName,
+		email: req.body.useremail,
+		id: req.body.id
+	};
+	try {
+		setDoc(doc(db, 'favourites', req.body.id), obj).then(() => {
+			res.send({ message: 'Added' });
+		});
+	} catch (e) {
+		console.error('Error adding document: ', e);
+	}
+});
+
+//  get all favourites tour
+router.get('/getfavourite/:email', async (req, res) => {
+	let userEmail = req.params.email;
+	const array = [];
+	const usersRef = collection(db, 'favourites');
+	try {
+		const q = await query(usersRef, where('email', '==', userEmail));
+		const queryResult = await getDocs(q);
+		queryResult.forEach(doc => {
+			array.push(doc.data());
+		});
+		res.send(array);
+	} catch (error) {
+		console.log(error);
+
+		res.send(error);
+	}
+});
+
+router.delete('/deletefavourite/:id', async (req, res) => {
+	const id = req.params.id;
+	await deleteDoc(doc(db, 'favourites', id)).then(() => {
+		res.send({ message: 'DELETED' });
+	});
+});
+
 module.exports = router;

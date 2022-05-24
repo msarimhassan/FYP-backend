@@ -19,10 +19,9 @@ POST http://localhost:5000/users/new
 Content-Type: application/json
 
 {
-    "name":"Sarim",
-    "email":"sarimhassan5@gmail.com",
-    "gender":"Male",
-    "isOrg":"No"
+    "Name":"Sarim",
+    "Email":"sarimhassan5@gmail.com",
+    "Gender":"Male"
 }
 
 ###
@@ -55,4 +54,54 @@ GET http://localhost:5000/company/gettours/xyz@gmail.com
 ###
 GET http://localhost:5000/company/gettour/FWNPNMQrtfVpBZUBt7bq
 
+###
+PUT http://localhost:5000/company/updatecompanyinsta/msarimdev@gmail.com
+Content-Type: application/json
 
+{
+    "insta":"iphone"
+}
+
+###
+PUT http://localhost:5000/company/updatecompanywhatsapp/msarimdev@gmail.com
+Content-Type: application/json
+
+{
+    "whatsapp":"03244628572"
+}
+
+###
+PUT http://localhost:5000/company/updatecompanywebsite/msarimdev@gmail.com
+Content-Type: application/json
+
+{
+    "url":"hello website"
+}
+
+###
+Get http://localhost:5000/users/getalltours
+
+###
+POST http://localhost:5000/users/addfavourite
+Content-Type: application/json
+
+{
+"companyName": "Adventure Tours Pakistan",
+"date": "2022-05-26",
+"details": " 1 day Visit to altit and baltit fort \nNanga partbat view point \nJunction\nchina border\n",
+"duration": "3",
+"imgUrl": "https://firebasestorage.googleapis.com/v0/b/trekxplorer.appspot.com/o/images%2FWallpaperDog-951903.jpg?alt=media&token=f0653c1d-dd99-4a12-847d-b2177092a668",
+"instaUsername": "msarimhassan",
+"location": "Hunza",
+"price": "12000",
+"title": "Tour to Hunza",
+"url": "youtube.com",
+"whatsappNo": "03219453316",
+"email":"msarimdev@gmail.com",
+"id":"Sn5YQfiazqrS0jABHUmn"
+}
+###
+GET http://localhost:5000/users/getfavourite/msarimdev@gmail.com
+
+###
+DELETE http://localhost:5000/users/deletefavourite/nVmi9xpjL54Wfa1Eso68

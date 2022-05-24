@@ -129,7 +129,12 @@ router.post('/addtour/:email', async (req, res) => {
 		duration: req.body.duration,
 		price: req.body.price,
 		date: req.body.date,
-		details: req.body.details
+		details: req.body.details,
+		instaUsername:req.body.instaUsername,
+		whatsappNo:req.body.whatsappNo,
+		url:req.body.webUrl,
+		companyName:req.body.CompanyName,
+		email:req.body.email
 	};
 
 	// const a = {
@@ -207,4 +212,36 @@ router.put('/updateTour',async(req,res)=>{
 })
 })
 
+//update insta 
+router.put('/updatecompanyinsta/:email', async(req,res)=>{
+
+	const companyRef=doc(db,"users",req.params.email);
+	await updateDoc(companyRef,{
+		instaUsername:req.body.insta
+	}).then((Res)=>{
+       res.send('updated insta')
+	}).catch((err)=>{console.log(err)});
+})
+
+//update whatsapp
+router.put('/updatecompanywhatsapp/:email', async(req,res)=>{
+
+	const companyRef=doc(db,"users",req.params.email);
+	await updateDoc(companyRef,{
+		whatsappNo:req.body.whatsapp
+	}).then((Res)=>{
+       res.send('updated whatsapp')
+	}).catch((err)=>{console.log(err)});
+})
+
+//update webiste link
+router.put('/updatecompanywebsite/:email', async(req,res)=>{
+
+	const companyRef=doc(db,"users",req.params.email);
+	await updateDoc(companyRef,{
+		url:req.body.url
+	}).then((Res)=>{
+       res.send('updated website url')
+	}).catch((err)=>{console.log(err)});
+})
 module.exports = router;
