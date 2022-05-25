@@ -8,7 +8,8 @@ const {
 	where,
 	collection,
 	getDocs,
-	deleteDoc
+	deleteDoc,
+	updateDoc
 } = require('firebase/firestore');
 
 router.get('/', (req, res) => {
@@ -127,6 +128,19 @@ router.delete('/deletefavourite/:id', async (req, res) => {
 	await deleteDoc(doc(db, 'favourites', id)).then(() => {
 		res.send({ message: 'DELETED' });
 	});
+});
+
+router.put('/updatename/:email', async (req, res) => {
+	const userRef = doc(db, 'users', req.params.email);
+	await updateDoc(userRef, {
+		name: req.body.name
+	})
+		.then(Res => {
+			res.send('updated website url');
+		})
+		.catch(err => {
+			console.log(err);
+		});
 });
 
 module.exports = router;

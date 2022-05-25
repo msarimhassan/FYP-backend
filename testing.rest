@@ -105,3 +105,11 @@ GET http://localhost:5000/users/getfavourite/msarimdev@gmail.com
 
 ###
 DELETE http://localhost:5000/users/deletefavourite/nVmi9xpjL54Wfa1Eso68
+
+###
+PUT http://localhost:5000/users/updatename/sarimhassan5@gmail.com
+Content-Type: application/json
+
+{
+    "name":"harry"
+}
