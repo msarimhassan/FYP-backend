@@ -244,4 +244,21 @@ router.put('/updatecompanywebsite/:email', async(req,res)=>{
        res.send('updated website url')
 	}).catch((err)=>{console.log(err)});
 })
+router.get('countlikes/:name',async(req,res)=>{
+		let liked = 0;
+		let name = req.params.name;
+		const usersRef = collection(db, 'favourites');
+		try {
+			const q = await query(usersRef, where('companyName','==', name));
+			const queryResult = await getDocs(q);
+			queryResult.forEach(doc => {
+				liked++;
+			});
+			res.send({ likes: liked });
+		} catch (error) {
+			console.log(error);
+
+			res.send(error);
+		}
+})
 module.exports = router;

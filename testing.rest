@@ -113,3 +113,6 @@ Content-Type: application/json
 {
     "name":"harry"
 }
+
+###
+GET http://localhost:5000/company/countlikes/Adventure Tours Pakistan
