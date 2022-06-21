@@ -9,7 +9,8 @@ const {
 	collection,
 	getDocs,
 	deleteDoc,
-	updateDoc
+	updateDoc,
+	addDoc
 } = require('firebase/firestore');
 
 router.get('/', (req, res) => {
@@ -143,4 +144,22 @@ router.put('/updatename/:email', async (req, res) => {
 		});
 });
 
+router.post('/submit-feedback',async(req,res)=>{
+    const obj={
+	 Type:req.body.Type,
+	 feedBack:req.body.feedBack,
+	companyName:req.body.companyName,
+	userEmail:req.body.userEmail,
+	}
+
+		try {
+			const docRef = await addDoc(collection(db, 'feedbacks'), obj).then(
+				() => {
+					res.send({ message: 'Added' });
+				}
+			);
+		} catch (error) {
+			console.log(error);
+		}
+})
 module.exports = router;

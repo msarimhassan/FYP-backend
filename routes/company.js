@@ -106,7 +106,7 @@ router.get('/getcompanydata/:email', async (req, res) => {
 		const q = await query(usersRef, where('email', '==', docID));
 		const queryResult = await getDocs(q);
 		queryResult.forEach(doc => {
-			const document = doc.data();
+			const document =doc.data();
 			console.log(document);
 			res.json(document);
 		});
@@ -118,7 +118,7 @@ router.get('/getcompanydata/:email', async (req, res) => {
 //add a tour in a new collection Tours
 
 router.post('/addtour/:email', async (req, res) => {
-	console.log(req.body)
+	console.log('Request.body',req.body)
 	const email = req.params.email;
 	console.log(email);
 	const obj = {
@@ -134,14 +134,14 @@ router.post('/addtour/:email', async (req, res) => {
 		whatsappNo:req.body.whatsappNo,
 		url:req.body.webUrl,
 		companyName:req.body.CompanyName,
-		email:req.body.email
+		email:req.params.email
 	};
 
 	// const a = {
 	// 	email: req.params.email, ...req.body
 	// }
 
-	console.log(obj);
+	console.log('backend tour',obj);
 	try {
 		const docRef = await addDoc(collection(db, 'tours'), obj).then(() => {
 			res.send({ message: 'Added' });
