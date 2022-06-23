@@ -162,4 +162,49 @@ router.post('/submit-feedback',async(req,res)=>{
 			console.log(error);
 		}
 })
+
+router.get('/get-count',async(req,res)=>{
+	let count=0;
+	const querySnapshot = await getDocs(collection(db, 'tours'));
+	querySnapshot.forEach(doc => {
+		// doc.data() is never undefined for query doc snapshots
+		 count=count+1;
+	});
+	res.send({tourcount:count});
+
+})
+
+router.get('/get-company-count',async(req,res)=>{
+	let count=0;
+
+	const companyRef = collection(db, 'users');
+	try {
+		const q = query(companyRef, where('isOrg', '==', 'Yes'));
+		const queryResult = await getDocs(q);
+		queryResult.forEach(doc => {
+			count=count+1;
+		});
+		res.send({ companyCount: count });
+	} catch (error) {
+		console.log(error);
+		res.send(error);
+	}
+})
+
+router.get('/get-user-count', async (req, res) => {
+	let count = 0;
+
+	const companyRef = collection(db, 'users');
+	try {
+		const q = query(companyRef, where('isOrg', '==', 'No'));
+		const queryResult = await getDocs(q);
+		queryResult.forEach(doc => {
+			count = count + 1;
+		});
+		res.send({ UserCount: count });
+	} catch (error) {
+		console.log(error);
+		res.send(error);
+	}
+});
 module.exports = router;

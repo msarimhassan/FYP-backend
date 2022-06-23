@@ -115,4 +115,17 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:5000/company/countlikes/Adventure Tours Pakistan
+GET http://localhost:5000/company/countlikes/Baltistan Tours
+
+
+###
+Get http://localhost:5000/company/getfeedback/Baltistan Tours
+
+
+###
+Get http://localhost:5000/users/get-count
+
+###
+Get http://localhost:5000/users/get-company-count
+###
+Get http://localhost:5000/users/get-user-count

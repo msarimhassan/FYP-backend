@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config');
-const  { getStorage, ref, deleteObject,refFromURL } =require('firebase/storage');
+const {
+	getStorage,
+	ref,
+	deleteObject,
+	refFromURL
+} = require('firebase/storage');
 const storage = getStorage();
 const {
 	doc,
@@ -12,7 +17,8 @@ const {
 	getDocs,
 	getDoc,
 	addDoc,
-	deleteDoc,updateDoc 
+	deleteDoc,
+	updateDoc
 } = require('firebase/firestore');
 
 router.get('/', (req, res) => {
@@ -79,20 +85,19 @@ router.post('/new', async (req, res) => {
 
 //get the tour count how many tours posted by the company
 router.get('/tourcount/:email', async (req, res) => {
-	let count=0;
+	let count = 0;
 	let docID = req.params.email;
 	const usersRef = collection(db, 'tours');
 	try {
 		const q = await query(usersRef, where('email', '==', docID));
 		const queryResult = await getDocs(q);
 		queryResult.forEach(doc => {
-			
-		   count++;
+			count++;
 		});
-		res.send({'count':count});
+		res.send({ count: count });
 	} catch (error) {
 		console.log(error);
-		
+
 		res.send(error);
 	}
 });
@@ -106,7 +111,7 @@ router.get('/getcompanydata/:email', async (req, res) => {
 		const q = await query(usersRef, where('email', '==', docID));
 		const queryResult = await getDocs(q);
 		queryResult.forEach(doc => {
-			const document =doc.data();
+			const document = doc.data();
 			console.log(document);
 			res.json(document);
 		});
@@ -118,7 +123,7 @@ router.get('/getcompanydata/:email', async (req, res) => {
 //add a tour in a new collection Tours
 
 router.post('/addtour/:email', async (req, res) => {
-	console.log('Request.body',req.body)
+	console.log('Request.body', req.body);
 	const email = req.params.email;
 	console.log(email);
 	const obj = {
@@ -130,18 +135,18 @@ router.post('/addtour/:email', async (req, res) => {
 		price: req.body.price,
 		date: req.body.date,
 		details: req.body.details,
-		instaUsername:req.body.instaUsername,
-		whatsappNo:req.body.whatsappNo,
-		url:req.body.webUrl,
-		companyName:req.body.CompanyName,
-		email:req.params.email
+		instaUsername: req.body.instaUsername,
+		whatsappNo: req.body.whatsappNo,
+		url: req.body.webUrl,
+		companyName: req.body.CompanyName,
+		email: req.params.email
 	};
 
 	// const a = {
 	// 	email: req.params.email, ...req.body
 	// }
 
-	console.log('backend tour',obj);
+	console.log('backend tour', obj);
 	try {
 		const docRef = await addDoc(collection(db, 'tours'), obj).then(() => {
 			res.send({ message: 'Added' });
@@ -194,71 +199,100 @@ router.get('/gettour/:id', async (req, res) => {
 	}
 });
 
-// Update tour of the company 
+// Update tour of the company
 
-router.put('/updateTour',async(req,res)=>{
-     const tourRef = doc(db, "tours", req.body.id);
-	 await updateDoc(tourRef, {
-  date:req.body.date,
-  details:req.body.details,
-  duration:req.body.duration,
-  imgUrl:req.body.imgUrl,
-  location:req.body.location,
-  price:req.body.price,
-  title:req.body.title
+router.put('/updateTour', async (req, res) => {
+	const tourRef = doc(db, 'tours', req.body.id);
+	await updateDoc(tourRef, {
+		date: req.body.date,
+		details: req.body.details,
+		duration: req.body.duration,
+		imgUrl: req.body.imgUrl,
+		location: req.body.location,
+		price: req.body.price,
+		title: req.body.title
+	})
+		.then(Res => {
+			res.send('Updated');
+		})
+		.catch(err => {
+			console.log(err);
+		});
+});
 
-}).then(Res=>{res.send('Updated')}).catch(err=>{
-	console.log(err);
-})
-})
-
-//update insta 
-router.put('/updatecompanyinsta/:email', async(req,res)=>{
-
-	const companyRef=doc(db,"users",req.params.email);
-	await updateDoc(companyRef,{
-		instaUsername:req.body.insta
-	}).then((Res)=>{
-       res.send('updated insta')
-	}).catch((err)=>{console.log(err)});
-})
+//update insta
+router.put('/updatecompanyinsta/:email', async (req, res) => {
+	const companyRef = doc(db, 'users', req.params.email);
+	await updateDoc(companyRef, {
+		instaUsername: req.body.insta
+	})
+		.then(Res => {
+			res.send('updated insta');
+		})
+		.catch(err => {
+			console.log(err);
+		});
+});
 
 //update whatsapp
-router.put('/updatecompanywhatsapp/:email', async(req,res)=>{
-
-	const companyRef=doc(db,"users",req.params.email);
-	await updateDoc(companyRef,{
-		whatsappNo:req.body.whatsapp
-	}).then((Res)=>{
-       res.send('updated whatsapp')
-	}).catch((err)=>{console.log(err)});
-})
+router.put('/updatecompanywhatsapp/:email', async (req, res) => {
+	const companyRef = doc(db, 'users', req.params.email);
+	await updateDoc(companyRef, {
+		whatsappNo: req.body.whatsapp
+	})
+		.then(Res => {
+			res.send('updated whatsapp');
+		})
+		.catch(err => {
+			console.log(err);
+		});
+});
 
 //update webiste link
-router.put('/updatecompanywebsite/:email', async(req,res)=>{
+router.put('/updatecompanywebsite/:email', async (req, res) => {
+	const companyRef = doc(db, 'users', req.params.email);
+	await updateDoc(companyRef, {
+		url: req.body.url
+	})
+		.then(Res => {
+			res.send('updated website url');
+		})
+		.catch(err => {
+			console.log(err);
+		});
+});
+router.get('/countlikes/:name', async (req, res) => {
+	let liked = 0;
+	let name = req.params.name;
+	const usersRef = collection(db, 'favourites');
+	try {
+		const q = query(usersRef, where('companyName', '==', name));
+		const queryResult = await getDocs(q);
+		queryResult.forEach(doc => {
+			liked++;
+		});
+		res.send({ likes: liked });
+	} catch (error) {
+		console.log(error);
+		res.send(error);
+	}
+});
 
-	const companyRef=doc(db,"users",req.params.email);
-	await updateDoc(companyRef,{
-		url:req.body.url
-	}).then((Res)=>{
-       res.send('updated website url')
-	}).catch((err)=>{console.log(err)});
-})
-router.get('countlikes/:name',async(req,res)=>{
-		let liked = 0;
-		let name = req.params.name;
-		const usersRef = collection(db, 'favourites');
-		try {
-			const q = await query(usersRef, where('companyName','==', name));
-			const queryResult = await getDocs(q);
-			queryResult.forEach(doc => {
-				liked++;
-			});
-			res.send({ likes: liked });
-		} catch (error) {
-			console.log(error);
+router.get('/getfeedback/:name',async(req,res)=>{
 
-			res.send(error);
-		}
+	let feedback=[];
+	let name = req.params.name;
+	const usersRef = collection(db, 'feedbacks');
+try {
+	const q = query(usersRef, where('companyName', '==', name));
+	const queryResult = await getDocs(q);
+	queryResult.forEach(doc => {
+		feedback.push(doc.data());
+	});
+	res.send({ feedbacks: feedback });
+} catch (error) {
+	console.log(error);
+	res.send(error);
+}
 })
 module.exports = router;
